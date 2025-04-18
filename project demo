@@ -1,0 +1,62 @@
+import java.util.*;
+
+class Product {
+    private final String storeName;
+    private final double price;
+    private final String productUrl;
+
+    public Product(String storeName, double price, String productUrl) {
+        this.storeName = storeName;
+        this.price = price;
+        this.productUrl = productUrl;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getProductUrl() {
+        return productUrl;
+    }
+}
+
+public class ProductComparison {
+
+    public static List<Product> getMockedProductData(String productName) {
+        String formattedName = productName.trim().replace(" ", "-").toLowerCase();
+        List<Product> data = new ArrayList<>();
+        data.add(new Product("Amazon", 499.99, "https://amazon.com/" + formattedName));
+        data.add(new Product("Flipkart", 475.50, "https://flipkart.com/" + formattedName));
+        data.add(new Product("eBay", 489.00, "https://ebay.com/" + formattedName));
+        data.add(new Product("Walmart", 465.00, "https://walmart.com/" + formattedName));
+        return data;
+    }
+
+    public static void compareProducts(List<Product> products) {
+        System.out.println("\nProduct Comparison:");
+        System.out.println("----------------------");
+
+        for (Product product : products) {
+            System.out.printf("Store: %s\nPrice: $%.2f\nLink: %s\n\n",
+                    product.getStoreName(), product.getPrice(), product.getProductUrl());
+        }
+
+        Product bestDeal = Collections.min(products, Comparator.comparingDouble(Product::getPrice));
+        System.out.printf("✅ Best Deal: %s - $%.2f\n", bestDeal.getStoreName(), bestDeal.getPrice());
+        System.out.println("👉 Link: " + bestDeal.getProductUrl());
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the product name: ");
+        String productName = scanner.nextLine();
+        scanner.close();
+
+        List<Product> products = getMockedProductData(productName);
+        compareProducts(products);
+    }
+}
